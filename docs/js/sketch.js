@@ -1,5 +1,5 @@
 let segmentation_results;
-let mosaicSize = 25;
+let mosaicSize = 15;
 let mosaicSizeSlider;
 let video;
 let pg;
@@ -14,13 +14,13 @@ function setup() {
 
 
   pixelDensity(1);
-  let p5canvas = createCanvas(windowWidth, windowHeight);
+  let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
   video = createCapture(VIDEO);
   video.hide();
 
-  pg = createGraphics(windowWidth, windowHeight);
+  pg = createGraphics(400, 400);
   pg.noStroke();
 
   /* スライダーの作成
@@ -90,18 +90,12 @@ function downloadSnapshot() {
 
 
 function windowResized() {
-  adjustCanvas();
+  adjustCanvas();//canvasのサイズを調整
 }
 
 
 function adjustCanvas() {
-  // Get an element by its ID
-  var element_webcam = document.getElementById('webcam');
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
-}
 
-video.onresize = function() {
-  // Adjust the canvas dimensions to match the video element
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-};
+  var element_webcam = document.getElementById('webcam');//webcamのidを取得
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
+}
