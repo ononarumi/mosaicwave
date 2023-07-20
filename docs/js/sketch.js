@@ -99,3 +99,9 @@ function adjustCanvas() {
   var element_webcam = document.getElementById('webcam');
   resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
 }
+
+video.onresize = function() {
+  // Adjust the canvas dimensions to match the video element
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+};
