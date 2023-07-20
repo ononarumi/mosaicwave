@@ -1,5 +1,5 @@
 let segmentation_results;
-let mosaicSize = 30;
+let mosaicSize = 25;
 let mosaicSizeSlider;
 let video;
 let pg;
@@ -14,13 +14,13 @@ function setup() {
 
 
   pixelDensity(1);
-  let p5canvas = createCanvas(400, 400);
+  let p5canvas = createCanvas(windowWidth, windowHeight);
   p5canvas.parent('#canvas');
 
   video = createCapture(VIDEO);
   video.hide();
 
-  pg = createGraphics(400, 400);
+  pg = createGraphics(windowWidth, windowHeight);
   pg.noStroke();
 
   /* スライダーの作成
