@@ -75,6 +75,8 @@ gotSegmentation = function (results) {
     }
   }
 }
+
+adjustCanvas();
 }
 
 function draw() {

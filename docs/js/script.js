@@ -83,6 +83,10 @@ function enableCam(event) {
         video.srcObject = stream;
         video.addEventListener("loadeddata", predictWebcam);
     });
+
+    // 追加：ウェブカメラ映像のキャプチャが開始された時にキャンバスのサイズを調整
+    adjustCanvas();
+    
 }
 let lastVideoTime = -1;
 let results = undefined;
