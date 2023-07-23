@@ -80,8 +80,11 @@ adjustCanvas();
 }
 
 function draw() {
-  image(video, 0, 0); // Draw the video
-  image(pg, 0, 0); // Draw the mosaic on top of the video
+  function draw() {
+    image(video, 0, 0, width, height); // Draw the video
+    image(pg, 0, 0, width, height); // Draw the mosaic on top of the video
+  }
+  
 }
   
 
