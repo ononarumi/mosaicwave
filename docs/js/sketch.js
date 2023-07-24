@@ -12,24 +12,19 @@ function setup() {
 
 
 
-
   pixelDensity(1);
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-  video = createCapture({
-    video: {
-      mandatory: {
-        minWidth: 400,
-        minHeight: 400
-      }
-    }
+  video = createCapture(VIDEO, function() {
+    // Create pg in the video's loadedmetadata event
+    pg = createGraphics(video.width, video.height);
+    pg.noStroke();
   });
   video.hide();
-  
 
-  pg = createGraphics(400, 400);
-  pg.noStroke();
+  pg = createGraphics(video.width, video.height);
+pg.noStroke();
 
   /* スライダーの作成
   mosaicSizeSlider = createSlider(20, 30, 20); // 初期値20、範囲20から30まで(動作の軽量化)
@@ -88,11 +83,42 @@ adjustCanvas();
 }
 
 function draw() {
-  image(video, 0, 0); // Draw the video
-  image(pg, 0, 0); // Draw the mosaic on top of the video
-}
-  
+  background(0); // Fill background with black color
 
+  if (video.loadedmetadata && video.width > 0 && video.height > 0) {
+    // Only proceed if video is loaded and has a valid size
+
+    if (pg.width !== video.width || pg.height !== video.height) {
+      // Resize pg if its size doesn't match the video's size
+      pg = createGraphics(video.width, video.height);
+      pg.noStroke();
+    }
+
+    video.loadPixels();
+  
+  let videoRatio = video.width / video.height;
+  let canvasRatio = width / height;
+  
+  let drawWidth, drawHeight;
+
+  // Decide whether to fit to width or height based on aspect ratio
+  if (videoRatio > canvasRatio) {
+    // Fit to height
+    drawHeight = height;
+    drawWidth = height * videoRatio;
+  } else {
+    // Fit to width
+    drawWidth = width;
+    drawHeight = width / videoRatio;
+  }
+
+  // Calculate upper-left corner position to center the video
+  let startX = (width - drawWidth) / 2;
+  let startY = (height - drawHeight) / 2;
+
+  image(video, startX, startY, drawWidth, drawHeight); // Draw the video fit to canvas while maintaining aspect ratio
+  image(pg, startX, startY, drawWidth, drawHeight); // Draw the mosaic fit to canvas while maintaining aspect ratio
+}}
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
   saveCanvas('mosaic', 'png');
