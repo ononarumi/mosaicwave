@@ -123,8 +123,8 @@ if (window.innerHeight > window.innerWidth) {
     let startX = (width - drawWidth) / 2;
     let startY = (height - drawHeight) / 2;
 
-    image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
-    image(pg, startX, startY, drawWidth, drawHeight); 
+    image(video, startX, startY, 400, 300); 
+    image(pg, startX, startY, 400, 300);
 
     // デバック出力
     console.log(`video.width: ${video.width}, video.height: ${video.height}`);
