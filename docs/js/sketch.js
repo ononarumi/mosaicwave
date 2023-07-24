@@ -11,13 +11,21 @@ function setup() {
  
 
 
-
-
   pixelDensity(1);
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-  video = createCapture(VIDEO);
+  // Set video resolution to match the canvas size
+  video = createCapture({
+    video: {
+      mandatory: {
+        minWidth: width,
+        minHeight: height,
+        maxWidth: width,
+        maxHeight: height
+      }
+    }
+  });
   video.hide();
 
   pg = createGraphics(400, 400);
@@ -47,7 +55,7 @@ downloadButton.style('background-size', 'cover');
 
 gotSegmentation = function (results) {
   pg.clear();
-  pg.resizeCanvas(width, height);
+
   // カメラからのピクセルデータをロード
   video.loadPixels();
 
@@ -79,13 +87,10 @@ gotSegmentation = function (results) {
 adjustCanvas();
 }
 
-
-  function draw() {
-    image(video, 0, 0, width, height); // Draw the video
-    image(pg, 0, 0, width, height); // Draw the mosaic on top of the video
-  }
-  
-
+function draw() {
+  image(video, 0, 0); // Draw the video
+  image(pg, 0, 0); // Draw the mosaic on top of the video
+}
   
 
 // スナップショットをダウンロードする関数
@@ -101,7 +106,6 @@ function windowResized() {
 
 function adjustCanvas() {
 
-  let element_webcam = document.getElementById('webcam');
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
-  pg.resizeCanvas(width, height); // Resize pg to match the canvas size
+  var element_webcam = document.getElementById('webcam');//webcamのidを取得
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }
