@@ -8,27 +8,20 @@ let downloadButton; // ダウンロードボタンを格納する変数
 
 
 function setup() {
+ 
+
+
+
+
   pixelDensity(1);
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-   const constraints = {
-    video: {
-      mandatory: {
-        minWidth: 400,
-        minHeight: 300,
-        maxWidth: 400,
-        maxHeight: 300
-      }
-    }
-  };
-
-  video = createCapture(constraints, function() {
-    pg = createGraphics(video.width, video.height);
-    pg.noStroke();
-  });
+  video = createCapture(VIDEO);
   video.hide();
 
+  pg = createGraphics(400, 400);
+  pg.noStroke();
 
   /* スライダーの作成
   mosaicSizeSlider = createSlider(20, 30, 20); // 初期値20、範囲20から30まで(動作の軽量化)
@@ -87,55 +80,10 @@ adjustCanvas();
 }
 
 function draw() {
-  background(245); //背景をライトグレーに設定
-  if (video.loadedmetadata && video.width > 0 && video.height > 0) {
-    //ビデオの幅と高さが0より大きい場合
-
-    if (pg.width !== video.width || pg.height !== video.height) {
-      // pgの幅と高さがvideoの幅と高さと異なる場合
-      pg = createGraphics(video.width, video.height);
-      pg.noStroke();
-    }
-
-    video.loadPixels();
-  
-    let videoRatio = video.width / video.height;
-    let canvasRatio = width / height;
-  
-    let drawWidth, drawHeight;
-
-    // 描画するサイズを計算
-if (window.innerHeight > window.innerWidth) {
-  // スマートフォンが縦向きの場合
-  drawWidth = width;
-  drawHeight = width * video.height / video.width;
-} else {
-  // スマートフォンが横向き、またはPCの場合
-  if (canvasRatio > videoRatio) {
-    // Canvas is wider than video, fit height
-    drawHeight = height;
-    drawWidth = height * videoRatio;
-  } else {
-    // Canvas is taller than video, fit width
-    drawWidth = width;
-    drawHeight = width / videoRatio;
-  }
+  image(video, 0, 0); // Draw the video
+  image(pg, 0, 0); // Draw the mosaic on top of the video
 }
-
-
-    // 描画する位置を計算
-    let startX = (width - drawWidth) / 2;
-    let startY = (height - drawHeight) / 2;
-
-    image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
-    image(pg, startX, startY, drawWidth, drawHeight); 
-
-    // デバック出力
-    console.log(`video.width: ${video.width}, video.height: ${video.height}`);
-    console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
-  }
-}
-
+  
 
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
@@ -153,4 +101,3 @@ function adjustCanvas() {
   var element_webcam = document.getElementById('webcam');//webcamのidを取得
   resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }
-
