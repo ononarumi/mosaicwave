@@ -8,23 +8,25 @@ let downloadButton; // ダウンロードボタンを格納する変数
 
 
 function setup() {
- 
-
-
-
   pixelDensity(1);
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-  video = createCapture(VIDEO, function() {
-    // Create pg in the video's loadedmetadata event
+  const constraints = {
+    video: {
+      mandatory: {
+        minWidth: 640,
+        minHeight: 480
+      }
+    }
+  };
+
+  video = createCapture(constraints, function() {
     pg = createGraphics(video.width, video.height);
     pg.noStroke();
   });
   video.hide();
 
-  pg = createGraphics(video.width, video.height);
-pg.noStroke();
 
   /* スライダーの作成
   mosaicSizeSlider = createSlider(20, 30, 20); // 初期値20、範囲20から30まで(動作の軽量化)
