@@ -27,24 +27,14 @@
 
 
 
-  
+  #webcam, #canvas {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 400px;
+    width: 400px;
+  }
 
-  #video-container {
-    padding-top: 10px;
-  position: relative;
-  width: 400px;  /* or any specific width */
-  height: 0;
-  padding-bottom: 75%;  /* aspect ratio 4:3 */
-  overflow: hidden;
-}
-
-#webcam , #canvas{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 
 
   
@@ -109,12 +99,7 @@
       Mosaic!
     </button>
     <div id="container">
-      <div id="video-container">
-      
-     
-      
       <video id="webcam" autoplay playsinline></video>
-      </div>
       <div id="canvas" autoplay playsinline></div>
     </div>
 
