@@ -83,7 +83,7 @@ adjustCanvas();
 }
 
 function draw() {
-  background(0); // 背景を黒に
+  background(245); //背景をライトグレーに設定
   if (video.loadedmetadata && video.width > 0 && video.height > 0) {
     //ビデオの幅と高さが0より大きい場合
 
@@ -95,29 +95,36 @@ function draw() {
 
     video.loadPixels();
   
-  let videoRatio = video.width / video.height;
-  let canvasRatio = width / height;
+    let videoRatio = video.width / video.height;
+    let canvasRatio = width / height;
   
-  let drawWidth, drawHeight;
+    let drawWidth, drawHeight;
 
-  //描画するサイズを計算
-  if (videoRatio > canvasRatio) {
-    // 高さに合わせる
-    drawHeight = height;
-    drawWidth = height * videoRatio;
-  } else {
-    // 幅に合わせる
-    drawWidth = width;
-    drawHeight = width / videoRatio;
+    //描画するサイズを計算
+    if (canvasRatio > videoRatio) {
+      // Canvas is wider than video, fit height
+      drawHeight = height;
+      drawWidth = height * videoRatio;
+    } else {
+      // Canvas is taller than video, fit width
+      drawWidth = width;
+      drawHeight = width / videoRatio;
+    }
+
+    // 描画する位置を計算
+    let startX = (width - drawWidth) / 2;
+    let startY = (height - drawHeight) / 2;
+
+    image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
+    image(pg, startX, startY, drawWidth, drawHeight); 
+
+    // デバック出力
+    console.log(`video.width: ${video.width}, video.height: ${video.height}`);
+    console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
+}
 
-  // 描画する位置を計算
-  let startX = (width - drawWidth) / 2;
-  let startY = (height - drawHeight) / 2;
 
-  image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
-  image(pg, startX, startY, drawWidth, drawHeight); 
-}}
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
   saveCanvas('mosaic', 'png');
@@ -134,3 +141,4 @@ function adjustCanvas() {
   var element_webcam = document.getElementById('webcam');//webcamのidを取得
   resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }
+
