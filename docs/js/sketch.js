@@ -104,8 +104,9 @@ function windowResized() {
 }
 
 
-function adjustCanvas() {
 
-  var element_webcam = document.getElementById('webcam');//webcamのidを取得
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
+
+function adjustCanvas() {
+  resizeCanvas(windowWidth * 0.8, windowHeight * 0.8);
 }
+
