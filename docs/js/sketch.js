@@ -48,28 +48,46 @@ downloadButton.style('transition-duration', '0.4s');
 downloadButton.style('background-image', 'url(./images/capturebutton.png)');
 downloadButton.style('background-size', 'cover');
 
+
 gotSegmentation = function (results) {
   pg.clear();
 
-  // カメラからのピクセルデータをロード
+  // Calculate the video's drawing size
+  let videoRatio = video.width / video.height;
+  let canvasRatio = width / height;
+  let drawWidth, drawHeight;
+  if (videoRatio > canvasRatio) {
+    drawHeight = height;
+    drawWidth = height * videoRatio;
+  } else {
+    drawWidth = width;
+    drawHeight = width / videoRatio;
+  }
+
+  // Calculate the scale factor between the video's original size and its drawing size
+  let scaleX = drawWidth / video.width;
+  let scaleY = drawHeight / video.height;
+
+  // Load the video's pixel data
   video.loadPixels();
 
   for (let y = 0; y < video.height; y += mosaicSize) {
     for (let x = 0; x < video.width; x += mosaicSize) {
 
-      // モザイクの左上のピクセルの色を取得
+      // Get the color of the top-left pixel of the mosaic
       let index = (x + y * video.width) * 4;
       let r = video.pixels[index];
       let g = video.pixels[index + 1];
       let b = video.pixels[index + 2];
 
-      // モザイクを作成するために、オリジナルの色情報を使用
+      // Create a mosaic using the original color information
       for (let j = 0; j < mosaicSize; j++) {
         for (let i = 0; i < mosaicSize; i++) {
           let mosaicIndex = ((x + i) + (y + j) * video.width) * 4;
           if (results[mosaicIndex / 4] == 0) { // selfie
             pg.fill(r, g, b);
-            pg.rect(x, y, mosaicSize, mosaicSize);
+            // Scale the coordinates and size of the mosaic rectangle
+            pg.rect(x * scaleX, y * scaleY, mosaicSize * scaleX, mosaicSize * scaleY);
           } else { // background
             // Do nothing
           }
@@ -78,6 +96,7 @@ gotSegmentation = function (results) {
     }
   }
 }
+
 
 adjustCanvas();
 }
@@ -96,29 +115,26 @@ function draw() {
 
     video.loadPixels();
   
-  let videoRatio = video.width / video.height;
-  let canvasRatio = width / height;
-  
-  let drawWidth, drawHeight;
+    // Calculate the video's drawing size
+    let videoRatio = video.width / video.height;
+    let canvasRatio = width / height;
+    let drawWidth, drawHeight;
+    if (videoRatio > canvasRatio) {
+      drawHeight = height;
+      drawWidth = height * videoRatio;
+    } else {
+      drawWidth = width;
+      drawHeight = width / videoRatio;
+    }
 
-  // Decide whether to fit to width or height based on aspect ratio
-  if (videoRatio > canvasRatio) {
-    // Fit to height
-    drawHeight = height;
-    drawWidth = height * videoRatio;
-  } else {
-    // Fit to width
-    drawWidth = width;
-    drawHeight = width / videoRatio;
+    // Calculate upper-left corner position to center the video
+    let startX = (width - drawWidth) / 2;
+    let startY = (height - drawHeight) / 2;
+
+    image(video, startX, startY, drawWidth, drawHeight); // Draw the video fit to canvas while maintaining aspect ratio
+    image(pg, startX, startY, drawWidth, drawHeight); // Draw the mosaic fit to canvas while maintaining aspect ratio
   }
-
-  // Calculate upper-left corner position to center the video
-  let startX = (width - drawWidth) / 2;
-  let startY = (height - drawHeight) / 2;
-
-  image(video, startX, startY, drawWidth, drawHeight); // Draw the video fit to canvas while maintaining aspect ratio
-  image(pg, startX, startY, drawWidth, drawHeight); // Draw the mosaic fit to canvas while maintaining aspect ratio
-}}
+}
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
   saveCanvas('mosaic', 'png');
