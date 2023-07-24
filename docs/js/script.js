@@ -135,4 +135,21 @@ async function predictWebcam() {
         window.requestAnimationFrame(predictWebcam);
     }
 }
+newFunction();
+function newFunction() {
+    let videoElement = document.createElement('video');
+
+    navigator.mediaDevices.getUserMedia({
+        video: {
+            aspectRatio: 4 / 3
+        },
+        audio: false
+    }).then((stream) => {
+        videoElement.srcObject = stream;
+        videoElement.play();
+    }).catch((error) => {
+        console.error('MediaStream Error: ', error);
+    });
+}
+
 
