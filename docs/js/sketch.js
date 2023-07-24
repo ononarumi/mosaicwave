@@ -47,7 +47,7 @@ downloadButton.style('background-size', 'cover');
 
 gotSegmentation = function (results) {
   pg.clear();
-
+  pg.resizeCanvas(width, height);
   // カメラからのピクセルデータをロード
   video.loadPixels();
 
@@ -101,6 +101,7 @@ function windowResized() {
 
 function adjustCanvas() {
 
-  var element_webcam = document.getElementById('webcam');//webcamのidを取得
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
+  let element_webcam = document.getElementById('webcam');
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
+  pg.resizeCanvas(width, height); // Resize pg to match the canvas size
 }
