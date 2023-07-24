@@ -137,8 +137,12 @@ function windowResized() {
 
 
 function adjustCanvas() {
+  // get webcam element
+  var element_webcam = document.getElementById('webcam');
 
-  var element_webcam = document.getElementById('webcam');//webcamのidを取得
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
+  // resize canvas to match webcam
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
+
+  // resize video to match webcam
+  video.size(width, height);
 }
-
