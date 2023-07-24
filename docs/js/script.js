@@ -136,7 +136,7 @@ async function predictWebcam() {
     }
 }
 
-let videoElement = document.createElement('video');
+/*let videoElement = document.createElement('video');
 
 navigator.mediaDevices.getUserMedia({
   video: {
@@ -149,4 +149,4 @@ navigator.mediaDevices.getUserMedia({
 }).catch((error) => {
   console.error('MediaStream Error: ', error);
 });
-//wa
+//wa*/
