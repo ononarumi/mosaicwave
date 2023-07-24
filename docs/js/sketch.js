@@ -12,11 +12,13 @@ function setup() {
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-  const constraints = {
+   const constraints = {
     video: {
       mandatory: {
-        minWidth: 640,
-        minHeight: 480
+        minWidth: 400,
+        minHeight: 300,
+        maxWidth: 400,
+        maxHeight: 300
       }
     }
   };
