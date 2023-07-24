@@ -11,22 +11,22 @@ function setup() {
  
 
 
+
+
   pixelDensity(1);
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-  // Set video resolution to match the canvas size
   video = createCapture({
     video: {
       mandatory: {
-        minWidth: width,
-        minHeight: height,
-        maxWidth: width,
-        maxHeight: height
+        minWidth: 400,
+        minHeight: 400
       }
     }
   });
   video.hide();
+  
 
   pg = createGraphics(400, 400);
   pg.noStroke();
@@ -104,9 +104,8 @@ function windowResized() {
 }
 
 
-
-
 function adjustCanvas() {
-  resizeCanvas(windowWidth * 0.8, windowHeight * 0.8);
-}
 
+  var element_webcam = document.getElementById('webcam');//webcamのidを取得
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
+}
