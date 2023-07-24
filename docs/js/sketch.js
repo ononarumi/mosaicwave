@@ -6,11 +6,6 @@ let pg;
 let gotSegmentation;
 let downloadButton; // ダウンロードボタンを格納する変数
 
-let aspectRatio = 4 / 3;
-let canvasWidth = 400;  // or any specific width
-let canvasHeight = canvasWidth / aspectRatio;
-
-
 
 
 function setup() {
@@ -19,13 +14,13 @@ function setup() {
 
 
   pixelDensity(1);
-  let p5canvas = createCanvas(canvasWidth, canvasHeight);
+  let p5canvas = createCanvas(400,300);
   p5canvas.parent('#canvas');
 
   video = createCapture(VIDEO);
   video.hide();
 
-  pg = createGraphics(400, 400);
+  pg = createGraphics(400, 300);
   pg.noStroke();
 
   /* スライダーの作成
