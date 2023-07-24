@@ -1,5 +1,5 @@
 let segmentation_results;
-let mosaicSize = 30;
+let mosaicSize = 15;
 let mosaicSizeSlider;
 let video;
 let pg;
@@ -23,10 +23,10 @@ function setup() {
   pg = createGraphics(400, 400);
   pg.noStroke();
 
-  // スライダーの作成
+  /* スライダーの作成
   mosaicSizeSlider = createSlider(20, 30, 20); // 初期値20、範囲20から30まで(動作の軽量化)
   mosaicSizeSlider.position(100, 550); // スライダーの位置を設定
-  mosaicSizeSlider.style('width', '180px'); // スライダーの幅を設定
+  mosaicSizeSlider.style('width', '180px'); // スライダーの幅を設定*/
 
   // ダウンロードボタンの作成
   downloadButton = createButton('Download');
@@ -45,37 +45,38 @@ downloadButton.style('transition-duration', '0.4s');
 downloadButton.style('background-image', 'url(./images/capturebutton.png)');
 downloadButton.style('background-size', 'cover');
 
+gotSegmentation = function (results) {
+  pg.clear();
 
-  gotSegmentation = function (results) {
-    pg.clear();
+  // カメラからのピクセルデータをロード
+  video.loadPixels();
 
-    // カメラからのピクセルデータをロード
-    video.loadPixels();
+  for (let y = 0; y < video.height; y += mosaicSize) {
+    for (let x = 0; x < video.width; x += mosaicSize) {
 
-    for (let y = 0; y < video.height; y += mosaicSizeSlider.value()) {
-      for (let x = 0; x < video.width; x += mosaicSizeSlider.value()) {
+      // モザイクの左上のピクセルの色を取得
+      let index = (x + y * video.width) * 4;
+      let r = video.pixels[index];
+      let g = video.pixels[index + 1];
+      let b = video.pixels[index + 2];
 
-        // モザイクの左上のピクセルの色を取得
-        let index = (x + y * video.width) * 4;
-        let r = video.pixels[index];
-        let g = video.pixels[index + 1];
-        let b = video.pixels[index + 2];
-
-        // モザイクを作成するために、オリジナルの色情報を使用
-        for (let j = 0; j < mosaicSize; j++) {
-          for (let i = 0; i < mosaicSize; i++) {
-            let mosaicIndex = ((x + i) + (y + j) * video.width) * 4;
-            if (results[mosaicIndex / 4] == 0) { // selfie
-              pg.fill(r, g, b);
-              pg.rect(x, y, mosaicSize, mosaicSize);
-            } else { // background
-              // Do nothing
-            }
+      // モザイクを作成するために、オリジナルの色情報を使用
+      for (let j = 0; j < mosaicSize; j++) {
+        for (let i = 0; i < mosaicSize; i++) {
+          let mosaicIndex = ((x + i) + (y + j) * video.width) * 4;
+          if (results[mosaicIndex / 4] == 0) { // selfie
+            pg.fill(r, g, b);
+            pg.rect(x, y, mosaicSize, mosaicSize);
+          } else { // background
+            // Do nothing
           }
         }
       }
     }
   }
+}
+
+adjustCanvas();
 }
 
 function draw() {
@@ -91,12 +92,12 @@ function downloadSnapshot() {
 
 
 function windowResized() {
-  adjustCanvas();
+  adjustCanvas();//canvasのサイズを調整
 }
 
 
 function adjustCanvas() {
-  // Get an element by its ID
-  var element_webcam = document.getElementById('webcam');
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
+
+  var element_webcam = document.getElementById('webcam');//webcamのidを取得
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }

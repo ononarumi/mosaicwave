@@ -30,7 +30,7 @@ const createImageSegmenter = async () => {
         baseOptions: {
             //modelAssetPath: `./models/deeplab_v3.tflite`,
             modelAssetPath: `./models/selfie_segmenter_landscape.tflite`,
-            delegate: "GPU"
+            delegate: "CPU"
         },
         runningMode: runningMode,
         outputCategoryMask: true,
@@ -135,3 +135,18 @@ async function predictWebcam() {
         window.requestAnimationFrame(predictWebcam);
     }
 }
+
+let videoElement = document.createElement('video');
+
+navigator.mediaDevices.getUserMedia({
+  video: {
+    aspectRatio: 4 / 3
+  },
+  audio: false
+}).then((stream) => {
+  videoElement.srcObject = stream;
+  videoElement.play();
+}).catch((error) => {
+  console.error('MediaStream Error: ', error);
+});
+//wa
