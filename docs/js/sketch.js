@@ -100,16 +100,24 @@ function draw() {
   
     let drawWidth, drawHeight;
 
-    //描画するサイズを計算
-    if (canvasRatio > videoRatio) {
-      // Canvas is wider than video, fit height
-      drawHeight = height;
-      drawWidth = height * videoRatio;
-    } else {
-      // Canvas is taller than video, fit width
-      drawWidth = width;
-      drawHeight = width / videoRatio;
-    }
+    // 描画するサイズを計算
+if (window.innerHeight > window.innerWidth) {
+  // スマートフォンが縦向きの場合
+  drawWidth = width;
+  drawHeight = width * video.height / video.width;
+} else {
+  // スマートフォンが横向き、またはPCの場合
+  if (canvasRatio > videoRatio) {
+    // Canvas is wider than video, fit height
+    drawHeight = height;
+    drawWidth = height * videoRatio;
+  } else {
+    // Canvas is taller than video, fit width
+    drawWidth = width;
+    drawHeight = width / videoRatio;
+  }
+}
+
 
     // 描画する位置を計算
     let startX = (width - drawWidth) / 2;
@@ -137,12 +145,8 @@ function windowResized() {
 
 
 function adjustCanvas() {
-  // get webcam element
-  var element_webcam = document.getElementById('webcam');
 
-  // resize canvas to match webcam
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);
-
-  // resize video to match webcam
-  video.size(width, height);
+  var element_webcam = document.getElementById('webcam');//webcamのidを取得
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }
+
