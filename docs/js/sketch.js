@@ -6,9 +6,6 @@ let pg;
 let gotSegmentation;
 let downloadButton; // ダウンロードボタンを格納する変数
 
-
-function setup() {
- 
 let aspectRatio = 4 / 3;
 let canvasWidth = 400;  // or any specific width
 let canvasHeight = canvasWidth / aspectRatio;
@@ -16,9 +13,14 @@ let canvasHeight = canvasWidth / aspectRatio;
 
 
 
+function setup() {
+ 
+
+
+
   pixelDensity(1);
-  let p5canvas = createCanvas(400, 400);
   let p5canvas = createCanvas(canvasWidth, canvasHeight);
+  p5canvas.parent('#canvas');
 
   video = createCapture(VIDEO);
   video.hide();
