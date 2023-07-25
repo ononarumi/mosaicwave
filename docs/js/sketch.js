@@ -51,8 +51,6 @@ gotSegmentation = function (results) {
   // カメラからのピクセルデータをロード
   video.loadPixels();
 
-  let mosaicSize = width / 20; // Update mosaic size according to canvas width
-
   for (let y = 0; y < video.height; y += mosaicSize) {
     for (let x = 0; x < video.width; x += mosaicSize) {
 
@@ -82,8 +80,8 @@ adjustCanvas();
 }
 
 function draw() {
-  image(video, 0, 0, width, height); // Draw the video
-  image(pg, 0, 0, width, height); // Draw the mosaic on top of the video
+  image(video, 0, 0, video.width, video.height); // Draw the video
+  image(pg, 0, 0, pg.width, pg.height); // Draw the mosaic on top of the video
 }
 
 
