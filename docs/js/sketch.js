@@ -63,10 +63,18 @@ gotSegmentation = function (results) {
     for (let x = 0; x < drawWidth; x += adjustedMosaicSize) {
 
       // モザイクの左上のピクセルの色を取得
-      let index = (Math.floor(x / drawWidthRatio) + Math.floor(y / drawHeightRatio) * video.width) * 4;
-      let r = video.pixels[index];
-      let g = video.pixels[index + 1];
-      let b = video.pixels[index + 2];
+     // モザイクの左上のピクセルの色を取得
+let index;
+if (window.orientation === 90 || window.orientation === -90) {
+  // In portrait mode, rotate the coordinate system by 90 degrees
+  index = (Math.floor(y / drawHeightRatio) + Math.floor(x / drawWidthRatio) * video.width) * 4;
+} else {
+  // In landscape mode, no rotation is needed
+  index = (Math.floor(x / drawWidthRatio) + Math.floor(y / drawHeightRatio) * video.width) * 4;
+}
+let r = video.pixels[index];
+let g = video.pixels[index + 1];
+let b = video.pixels[index + 2];
 
       // モザイクを作成するために、オリジナルの色情報を使用
       for (let j = 0; j < adjustedMosaicSize; j++) {
