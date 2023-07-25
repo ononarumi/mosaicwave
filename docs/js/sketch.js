@@ -54,6 +54,9 @@ gotSegmentation = function (results) {
   // カメラからのピクセルデータをロード
   video.loadPixels();
 
+  let drawWidthRatio = drawWidth / video.width;
+  let drawHeightRatio = drawHeight / video.height;
+
   for (let y = 0; y < video.height; y += mosaicSize) {
     for (let x = 0; x < video.width; x += mosaicSize) {
 
@@ -69,7 +72,7 @@ gotSegmentation = function (results) {
           let mosaicIndex = ((x + i) + (y + j) * video.width) * 4;
           if (results[mosaicIndex / 4] == 0) { // selfie
             pg.fill(r, g, b);
-            pg.rect(x, y, mosaicSize, mosaicSize);
+            pg.rect(x * drawWidthRatio, y * drawHeightRatio, mosaicSize * drawWidthRatio, mosaicSize * drawHeightRatio);
           } else { // background
             // Do nothing
           }
