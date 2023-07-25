@@ -12,19 +12,16 @@ function setup() {
 
 
 
+
   pixelDensity(1);
   let p5canvas = createCanvas(400, 400);
   p5canvas.parent('#canvas');
 
-  video = createCapture(VIDEO, function() {
-    // Create pg in the video's loadedmetadata event
-    pg = createGraphics(video.width, video.height);
-    pg.noStroke();
-  });
+  video = createCapture(VIDEO);
   video.hide();
 
-  pg = createGraphics(video.width, video.height);
-pg.noStroke();
+  pg = createGraphics(400, 400);
+  pg.noStroke();
 
   /* スライダーの作成
   mosaicSizeSlider = createSlider(20, 30, 20); // 初期値20、範囲20から30まで(動作の軽量化)
@@ -53,6 +50,8 @@ gotSegmentation = function (results) {
 
   // カメラからのピクセルデータをロード
   video.loadPixels();
+
+  let mosaicSize = width / 20; // Update mosaic size according to canvas width
 
   for (let y = 0; y < video.height; y += mosaicSize) {
     for (let x = 0; x < video.width; x += mosaicSize) {
@@ -83,45 +82,8 @@ adjustCanvas();
 }
 
 function draw() {
-  background(245); //背景をライトグレーに設定
-  if (video.loadedmetadata && video.width > 0 && video.height > 0) {
-    //ビデオの幅と高さが0より大きい場合
-
-    if (pg.width !== video.width || pg.height !== video.height) {
-      // pgの幅と高さがvideoの幅と高さと異なる場合
-      pg = createGraphics(video.width, video.height);
-      pg.noStroke();
-    }
-
-    video.loadPixels();
-  
-    let videoRatio = video.width / video.height;
-    let canvasRatio = width / height;
-  
-    let drawWidth, drawHeight;
-
-    //描画するサイズを計算
-    if (canvasRatio > videoRatio) {
-      // Canvas is wider than video, fit height
-      drawHeight = height;
-      drawWidth = height * videoRatio;
-    } else {
-      // Canvas is taller than video, fit width
-      drawWidth = width;
-      drawHeight = width / videoRatio;
-    }
-
-    // 描画する位置を計算
-    let startX = (width - drawWidth) / 2;
-    let startY = (height - drawHeight) / 2;
-
-    image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
-    image(pg, startX, startY, drawWidth, drawHeight); 
-
-    // デバック出力
-    console.log(`video.width: ${video.width}, video.height: ${video.height}`);
-    console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
-  }
+  image(video, 0, 0, width, height); // Draw the video
+  image(pg, 0, 0, width, height); // Draw the mosaic on top of the video
 }
 
 
