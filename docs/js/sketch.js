@@ -148,8 +148,21 @@ function windowResized() {
 
 
 function adjustCanvas() {
-
   var element_webcam = document.getElementById('webcam');//webcamのidを取得
-  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
+
+  let webcamRatio = element_webcam.clientHeight / element_webcam.clientWidth;
+  let newHeight, newWidth;
+
+  if (window.orientation === 90 || window.orientation === -90) {
+    // In portrait mode, width should be smaller
+    newHeight = Math.min(element_webcam.clientHeight, element_webcam.clientWidth * webcamRatio);
+    newWidth = newHeight / webcamRatio;
+  } else {
+    // In landscape mode, width should be larger
+    newWidth = Math.min(element_webcam.clientWidth, element_webcam.clientHeight * webcamRatio);
+    newHeight = newWidth * webcamRatio;
+  }
+
+  resizeCanvas(newWidth, newHeight);//webcamのサイズに合わせる
 }
 
