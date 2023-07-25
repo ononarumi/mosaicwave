@@ -136,11 +136,21 @@ async function predictWebcam() {
     }
 }
 
-/*
+//ポートレートモードだった時にのみnewFunction();を実行する
+if (window.matchMedia("(orientation: portrait)").matches) {
+
 newFunction();
+
+
+}
 function newFunction() {
     let videoElement = document.createElement('video');
-
+    videoElement.setAttribute('autoplay', '');
+    videoElement.setAttribute('muted', '');
+    videoElement.setAttribute('playsinline', '');
+    videoElement.setAttribute('id', 'webcam');
+    document.body.appendChild(videoElement);
+    
     navigator.mediaDevices.getUserMedia({
         video: {
             aspectRatio: 4 / 3
@@ -153,4 +163,4 @@ function newFunction() {
         console.error('MediaStream Error: ', error);
     });
 }
-*/
+
