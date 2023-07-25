@@ -23,6 +23,9 @@ function setup() {
   });
   video.hide();
 
+  pg = createGraphics(video.width, video.height);
+pg.noStroke();
+
   /* スライダーの作成
   mosaicSizeSlider = createSlider(20, 30, 20); // 初期値20、範囲20から30まで(動作の軽量化)
   mosaicSizeSlider.position(100, 550); // スライダーの位置を設定
@@ -135,7 +138,7 @@ function windowResized() {
 
 function adjustCanvas() {
 
-var element_webcam = document.getElementById('webcam');//webcamのidを取得
+  var element_webcam = document.getElementById('webcam');//webcamのidを取得
   resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }
 
