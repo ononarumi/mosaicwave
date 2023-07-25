@@ -70,6 +70,8 @@ gotSegmentation = function (results) {
           } else { // background
             // Do nothing
           }
+           
+          
         }
       }
     }

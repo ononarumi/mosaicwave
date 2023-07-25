@@ -136,6 +136,7 @@ async function predictWebcam() {
     }
 }
 
+/*
 newFunction();
 function newFunction() {
     let videoElement = document.createElement('video');
@@ -152,4 +153,4 @@ function newFunction() {
         console.error('MediaStream Error: ', error);
     });
 }
-
+*/
