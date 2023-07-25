@@ -57,22 +57,24 @@ gotSegmentation = function (results) {
   let drawWidthRatio = drawWidth / video.width;
   let drawHeightRatio = drawHeight / video.height;
 
-  for (let y = 0; y < video.height; y += mosaicSize) {
-    for (let x = 0; x < video.width; x += mosaicSize) {
+  let adjustedMosaicSize = mosaicSize * drawWidthRatio;
+
+  for (let y = 0; y < drawHeight; y += adjustedMosaicSize) {
+    for (let x = 0; x < drawWidth; x += adjustedMosaicSize) {
 
       // モザイクの左上のピクセルの色を取得
-      let index = (x + y * video.width) * 4;
+      let index = (Math.floor(x / drawWidthRatio) + Math.floor(y / drawHeightRatio) * video.width) * 4;
       let r = video.pixels[index];
       let g = video.pixels[index + 1];
       let b = video.pixels[index + 2];
 
       // モザイクを作成するために、オリジナルの色情報を使用
-      for (let j = 0; j < mosaicSize; j++) {
-        for (let i = 0; i < mosaicSize; i++) {
-          let mosaicIndex = ((x + i) + (y + j) * video.width) * 4;
+      for (let j = 0; j < adjustedMosaicSize; j++) {
+        for (let i = 0; i < adjustedMosaicSize; i++) {
+          let mosaicIndex = ((Math.floor((x + i) / drawWidthRatio)) + Math.floor((y + j) / drawHeightRatio) * video.width) * 4;
           if (results[mosaicIndex / 4] == 0) { // selfie
             pg.fill(r, g, b);
-            pg.rect(x * drawWidthRatio, y * drawHeightRatio, mosaicSize * drawWidthRatio, mosaicSize * drawHeightRatio);
+            pg.rect(x, y, adjustedMosaicSize, adjustedMosaicSize);
           } else { // background
             // Do nothing
           }
@@ -87,6 +89,8 @@ adjustCanvas();
 
 // drawWidth and drawHeight are defined in the global scope
 let drawWidth, drawHeight;
+
+
 
 function draw() {
   background(245); //背景をライトグレーに設定
@@ -134,7 +138,6 @@ function draw() {
     console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
 }
-
 
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
