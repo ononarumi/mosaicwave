@@ -145,7 +145,7 @@ newFunction();
 }
 function newFunction() {
     let videoElement = document.createElement('video');
-    videoElement.style.objectFit = 'cover'; // or 'contain', depending on your needs
+    videoElement.style.objectFit =  'contain';
 
     navigator.mediaDevices.getUserMedia({
         video: {
