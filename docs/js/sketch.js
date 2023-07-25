@@ -83,7 +83,6 @@ gotSegmentation = function (results) {
     }
   }
 }
-
 adjustCanvas();
 }
 
@@ -136,6 +135,7 @@ function draw() {
     console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
 }
+
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
   saveCanvas('mosaic', 'png');
