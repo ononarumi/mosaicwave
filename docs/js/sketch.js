@@ -87,12 +87,6 @@ function draw() {
   if (video.loadedmetadata && video.width > 0 && video.height > 0) {
     //ビデオの幅と高さが0より大きい場合
 
-    if (pg.width !== video.width || pg.height !== video.height) {
-      // pgの幅と高さがvideoの幅と高さと異なる場合
-      pg = createGraphics(video.width, video.height);
-      pg.noStroke();
-    }
-
     video.loadPixels();
   
     let videoRatio;
@@ -116,6 +110,12 @@ function draw() {
       // Canvas is taller than video, fit width
       drawWidth = width;
       drawHeight = width / videoRatio;
+    }
+
+    if (pg.width !== drawWidth || pg.height !== drawHeight) {
+      // pgの幅と高さがdrawWidthとdrawHeightと異なる場合
+      pg = createGraphics(drawWidth, drawHeight);
+      pg.noStroke();
     }
 
     // 描画する位置を計算
