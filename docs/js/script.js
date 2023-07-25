@@ -145,7 +145,6 @@ newFunction();
 }
 function newFunction() {
     let videoElement = document.createElement('video');
-    videoElement.style.objectFit =  'contain';
 
     navigator.mediaDevices.getUserMedia({
         video: {
@@ -159,3 +158,4 @@ function newFunction() {
         console.error('MediaStream Error: ', error);
     });
 }
+

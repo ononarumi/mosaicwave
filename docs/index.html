@@ -23,6 +23,9 @@
   body {
     background-color: #f5f5f5; /* 背景色をライトグレーに設定 */
     font-family: Arial, sans-serif; /* フォントをArialまたはsans-serifに設定 */
+  
+  /* スクロールを無効にする */
+  overflow: hidden;
   }
 
 
@@ -43,8 +46,14 @@
     position: relative;
     width: 100%;
     padding-bottom: 100%; /* aspect ratio 4:3 */
-    padding-left: 80px;
+    padding-left: 100px;
     overflow: hidden;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
 
 
 
@@ -59,9 +68,8 @@
 
     /*位置を調整*/
     position: absolute;
-    top: 600px;
-    left: 190px;
-    transform: translate(-50%, -50%);
+    top: 300px;
+
     background-image: url('./images/webcambutton.png'); /* 画像のパスを設定 */
     background-size: cover; /* 画像がボタン全体を覆うように設定 */
     padding-right: 30px;
@@ -82,35 +90,68 @@
   footer{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding-top: 200px;
+    
   }
+
+  #something{
+    padding-top: 15%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-left: 40%;
+    
+
+  }
+
+  #DLbutton {
+  /* ダウンロードボタンを配置するスタイル */
+  position: absolute;
+  top: 250px; /* webcamButton の下に配置するために適切な値に調整 */
+  left: 75.5%; /* 画面の中央に配置するために適切な値に調整 */
+  transform: translateX(-50%);
+}
+  
+
+  
 
 </style>
 
 
-<header>
-  <img src="./images/mosaicwave.png" alt="mosaicwave" width="300" height="80">
-</header>
-
-  <body>
-
-   
- 
-    <button id="webcamButton">
-      Mosaic!
-    </button>
-    <div id="container">
+<body>
+  <div id="container">
+    <div id="monitor">
       <video id="webcam" autoplay playsinline></video>
       <div id="canvas" autoplay playsinline></div>
     </div>
+
+    <div id="something">
+      <img src="./images/mosaicwave.png" alt="mosaicwave" width="300" height="80">
+
+      <button id="webcamButton">
+        Mosaic!
+      </button>
+
+    </div>
+
+
+  <div id="DLbutton"></div> <!-- DownloadButton を配置するためのコンテナ -->
+
+  
+  
+</div>
+
 
     <!-- include js libraries -->
     <script src="./js/p5.js"></script>
     <script src="./js/sketch.js"></script>
     <script type="module" src="./js/script.js"></script>
    
+   
   </body>
-  <footer>
-    2023 mosaicwave
-  </footer>
+
+  
+  
 
 </html>
