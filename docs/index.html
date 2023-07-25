@@ -9,12 +9,114 @@
   
 </head>
 <style>
+/*PCの時のスタイル*/
+body {
+      background-color: #f5f5f5; /* 背景色をライトグレーに設定 */
+      font-family: Arial, sans-serif; /* フォントをArialまたはsans-serifに設定 */
+      margin: 0; /* マージンを0に設定して、スクロールバーを表示しないようにする */
+    }
+
+    #webcam,
+    #canvas {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      height: 375px;
+      width: 375px;
+    }
+
+    #container {
+      position: relative;
+      width: 100%;
+      padding-bottom: 100%; /* aspect ratio 4:3 */
+     
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    #webcamButton {
+      border: none;
+      /* ボタンの境界線を削除 */
+      outline: none;
+      /* ボタンのアウトラインを削除 */
+      color: transparent;
+      /* ボタンのテキストを透明にする */
+      text-shadow: 0 0 0 transparent;
+      /* テキストのシャドウを削除 */
+      background-color: transparent;
+      /* ボタンの背景色を透明にする */
+
+      /*位置を調整*/
+      position: absolute;
+      top: 55vh;
+
+      background-image: url('./images/webcambutton.png');
+      /* 画像のパスを設定 */
+      background-size: cover;
+      /* 画像がボタン全体を覆うように設定 */
+      padding-right: 50px;
+      padding-right: 50px;
+      padding-bottom: 20px;
+
+      cursor: pointer;
+      /*一番上に表示*/
+      z-index: 1;
+    }
+
+    #webcamButton:hover {
+      cursor: pointer;
+    }
+
+    footer {
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      padding-top: 200px;
+    }
+
+    #something {
+      padding-top: 15%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      
+    }
+
+    #DLbutton {
+      /* ダウンロードボタンを配置するスタイル */
+      position: absolute;
+      top:60vh; /* webcamButton の下に配置するために適切な値に調整 */
+       /* 画面の中央に配置するために適切な値に調整 */
+      background-color: transparent;
+      color: transparent;
+      border: none;
+      padding-right: 30px;
+      padding-bottom: 20px;
+      display: flex;
+      cursor: pointer;
+      background-image: url('./images/capturebutton.png');
+      background-size: cover;
+      z-index: 1;
+    }
+
+    #virtualheader {
+      display: none;
+    }
+
+
+
+/*スマホ(横）の時のスタイル*/
+
+   @media (orientation: landscape) {
   header{
     background-color: #f5f5f5; /* 背景色をライトグレーに設定 */
     font-family: Arial, sans-serif; /* フォントをArialまたはsans-serifに設定 */
     padding-top: 60px;
    height: 25%;
     padding-bottom: 10px;
+    display:none;
   }
 
   img{
@@ -34,8 +136,8 @@
     position: absolute;
     left: 0px;
     top: 0px;
-    height: 400px;
-    width: 400px;
+    height: 375px;
+    width: 375px;
   }
 
 
@@ -43,7 +145,7 @@
   
 
   #container {
-    position: relative;
+    position: absolute;
     width: 100%;
     padding-bottom: 100%; /* aspect ratio 4:3 */
 
@@ -68,14 +170,15 @@
 
     /*位置を調整*/
     position: absolute;
-    top: 300px;
+    top: 80vh;
 
     background-image: url('./images/webcambutton.png'); /* 画像のパスを設定 */
     background-size: cover; /* 画像がボタン全体を覆うように設定 */
-    padding-right: 30px;
-    padding-right: 30px;
-    padding-bottom: 10px;
+    padding-right: 50px;
+    padding-right: 50px;
+    padding-bottom: 20px;
 
+    cursor: pointer;
       /*一番上に表示*/
     z-index: 1;
     
@@ -90,7 +193,7 @@
   footer{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding-top: 200px;
-    
+    display: none;
   }
 
   #something{
@@ -101,24 +204,52 @@
     align-items: center;
     flex-direction: column;
     padding-left: 30%;
+  
+
     
 
   }
 
   #DLbutton {
+  
+
   /* ダウンロードボタンを配置するスタイル */
   position: absolute;
-  top: 250px; /* webcamButton の下に配置するために適切な値に調整 */
-  left: 75.5%; /* 画面の中央に配置するために適切な値に調整 */
-  transform: translateX(-50%);
-}
+  top: 95vh; /* webcamButton の下に配置するために適切な値に調整 */
+ /* 画面の中央に配置するために適切な値に調整 */
   
+  
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  display: flex;
+  cursor: pointer;
+  background-image: url('./images/capturebutton.png');
+  background-size: cover;
+  z-index: 1;
+}
+
+#virtualheader{
+  display: flex;
+}
+
+}
+   
+
+
+
+
+
 
   
 
 </style>
 
-
+<header>
+  <img src="./images/mosaicwave.png" alt="mosaicwave" width="300" height="80">
+</header>
 <body>
   <div id="container">
     <div id="monitor">
@@ -127,20 +258,25 @@
     </div>
 
     <div id="something">
-      <img src="./images/mosaicwave.png" alt="mosaicwave" width="300" height="80">
+      <img src="./images/mosaicwave.png" id="virtualheader" alt="mosaicwave" width="300" height="80">
 
       <button id="webcamButton">
         Mosaic!
       </button>
+      <div id="DLbutton"></div> <!-- DownloadButton を配置するためのコンテナ -->
 
     </div>
 
 
-  <div id="DLbutton"></div> <!-- DownloadButton を配置するためのコンテナ -->
+ 
 
   
   
 </div>
+
+<footer>
+  <p>© 2023 mosaicwave</p>
+</footer>
 
 
     <!-- include js libraries -->

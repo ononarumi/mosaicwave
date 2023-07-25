@@ -14,13 +14,13 @@ function setup() {
 
 
   pixelDensity(1);
-  let p5canvas = createCanvas(400, 400);
+  let p5canvas = createCanvas(375, 375);
   p5canvas.parent('#canvas');
 
   video = createCapture(VIDEO);
   video.hide();
 
-  pg = createGraphics(400, 400);
+  pg = createGraphics(375, 375);
   pg.noStroke();
 
   /* スライダーの作成
@@ -32,19 +32,13 @@ function setup() {
   downloadButton = createButton('Download');
   downloadButton.parent('#DLbutton');
   
-  downloadButton.mousePressed(downloadSnapshot); // ボタンが押されたときの動作を設定
 
-  // ボタンにスタイルを適用
-downloadButton.style('background-color', 'transparent');
-downloadButton.style('color', 'transparent');
-downloadButton.style('border', 'none');
-downloadButton.style('padding-right', '20px');
-downloadButton.style('padding-bottom', '15px');
-downloadButton.style('display', 'inline-block');
-downloadButton.style('cursor', 'pointer');
-downloadButton.style('transition-duration', '0.4s');
-downloadButton.style('background-image', 'url(./images/capturebutton.png)');
-downloadButton.style('background-size', 'cover');
+  downloadButton.mousePressed(downloadSnapshot); // ボタンが押されたときの動作を設定
+  downloadButton.style('border', 'none'); // ボタンの枠線を削除
+  downloadButton.style('outline', 'none'); // ボタンのアウトラインを削除
+  downloadButton.style('text-shadow', '0 0 0 transparent'); // テキストのシャドウを削除
+  downloadButton.style('background-color', 'transparent'); // 背景色を削除
+ 
 
 gotSegmentation = function (results) {
   pg.clear();
