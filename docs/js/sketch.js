@@ -51,46 +51,30 @@ downloadButton.style('background-size', 'cover');
 gotSegmentation = function (results) {
   pg.clear();
 
-  // カメラからのピクセルデータをロード
+  // Load pixel data from the camera
   video.loadPixels();
 
   let drawWidthRatio = drawWidth / video.width;
   let drawHeightRatio = drawHeight / video.height;
 
-  // モザイクのサイズを計算
-  let adjustedMosaicSize;
-  if (window.orientation === 90 || window.orientation === -90) {
-    // In portrait mode, height should be smaller
-    adjustedMosaicSize = mosaicSize * drawHeightRatio;
-  } else {
-    // In landscape mode, width should be larger
-    adjustedMosaicSize = mosaicSize * drawWidthRatio;
-  }
+  let adjustedMosaicSize = mosaicSize * Math.max(drawWidthRatio, drawHeightRatio);
 
-  for (let y = 0; y < drawHeight; y += adjustedMosaicSize) {
-    for (let x = 0; x < drawWidth; x += adjustedMosaicSize) {
+  for (let y = 0; y < video.height; y += adjustedMosaicSize) {
+    for (let x = 0; x < video.width; x += adjustedMosaicSize) {
 
-      // モザイクの左上のピクセルの色を取得
-     // モザイクの左上のピクセルの色を取得
-let index;
-if (window.orientation === 90 || window.orientation === -90) {
-  // In portrait mode, rotate the coordinate system by 90 degrees
-  index = (Math.floor(y / drawHeightRatio) + Math.floor(x / drawWidthRatio) * video.width) * 4;
-} else {
-  // In landscape mode, no rotation is needed
-  index = (Math.floor(x / drawWidthRatio) + Math.floor(y / drawHeightRatio) * video.width) * 4;
-}
-let r = video.pixels[index];
-let g = video.pixels[index + 1];
-let b = video.pixels[index + 2];
+      // Get the color of the top-left pixel of the mosaic
+      let index = (Math.floor(x) + Math.floor(y) * video.width) * 4;
+      let r = video.pixels[index];
+      let g = video.pixels[index + 1];
+      let b = video.pixels[index + 2];
 
-      // モザイクを作成するために、オリジナルの色情報を使用
+      // Use the original color information to create the mosaic
       for (let j = 0; j < adjustedMosaicSize; j++) {
         for (let i = 0; i < adjustedMosaicSize; i++) {
-          let mosaicIndex = ((Math.floor((x + i) / drawWidthRatio)) + Math.floor((y + j) / drawHeightRatio) * video.width) * 4;
+          let mosaicIndex = ((Math.floor(x + i)) + Math.floor((y + j)) * video.width) * 4;
           if (results[mosaicIndex / 4] == 0) { // selfie
             pg.fill(r, g, b);
-            pg.rect(x, y, adjustedMosaicSize, adjustedMosaicSize);
+            pg.rect(x * drawWidthRatio, y * drawHeightRatio, adjustedMosaicSize, adjustedMosaicSize);
           } else { // background
             // Do nothing
           }
