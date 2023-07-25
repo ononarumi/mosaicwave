@@ -85,6 +85,9 @@ gotSegmentation = function (results) {
 adjustCanvas();
 }
 
+// drawWidth and drawHeight are defined in the global scope
+let drawWidth, drawHeight;
+
 function draw() {
   background(245); //背景をライトグレーに設定
   if (video.loadedmetadata && video.width > 0 && video.height > 0) {
@@ -94,8 +97,6 @@ function draw() {
   
     let videoRatio;
     let canvasRatio = width / height;
-  
-    let drawWidth, drawHeight;
 
     // Check if device is in portrait mode
     if (window.orientation === 90 || window.orientation === -90) {
@@ -133,7 +134,6 @@ function draw() {
     console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
 }
-
 
 
 // スナップショットをダウンロードする関数
