@@ -51,30 +51,25 @@ downloadButton.style('background-size', 'cover');
 gotSegmentation = function (results) {
   pg.clear();
 
-  // Load pixel data from the camera
+  // カメラからのピクセルデータをロード
   video.loadPixels();
 
-  let drawWidthRatio = drawWidth / video.width;
-  let drawHeightRatio = drawHeight / video.height;
+  for (let y = 0; y < video.height; y += mosaicSize) {
+    for (let x = 0; x < video.width; x += mosaicSize) {
 
-  let adjustedMosaicSize = mosaicSize * Math.max(drawWidthRatio, drawHeightRatio);
-
-  for (let y = 0; y < video.height; y += adjustedMosaicSize) {
-    for (let x = 0; x < video.width; x += adjustedMosaicSize) {
-
-      // Get the color of the top-left pixel of the mosaic
-      let index = (Math.floor(x) + Math.floor(y) * video.width) * 4;
+      // モザイクの左上のピクセルの色を取得
+      let index = (x + y * video.width) * 4;
       let r = video.pixels[index];
       let g = video.pixels[index + 1];
       let b = video.pixels[index + 2];
 
-      // Use the original color information to create the mosaic
-      for (let j = 0; j < adjustedMosaicSize; j++) {
-        for (let i = 0; i < adjustedMosaicSize; i++) {
-          let mosaicIndex = ((Math.floor(x + i)) + Math.floor((y + j)) * video.width) * 4;
+      // モザイクを作成するために、オリジナルの色情報を使用
+      for (let j = 0; j < mosaicSize; j++) {
+        for (let i = 0; i < mosaicSize; i++) {
+          let mosaicIndex = ((x + i) + (y + j) * video.width) * 4;
           if (results[mosaicIndex / 4] == 0) { // selfie
             pg.fill(r, g, b);
-            pg.rect(x * drawWidthRatio, y * drawHeightRatio, adjustedMosaicSize, adjustedMosaicSize);
+            pg.rect(x, y, mosaicSize, mosaicSize);
           } else { // background
             // Do nothing
           }
@@ -83,57 +78,52 @@ gotSegmentation = function (results) {
     }
   }
 }
+
 adjustCanvas();
 }
-
-// drawWidth and drawHeight are defined in the global scope
-let drawWidth, drawHeight;
 
 function draw() {
   background(245); //背景をライトグレーに設定
   if (video.loadedmetadata && video.width > 0 && video.height > 0) {
     //ビデオの幅と高さが0より大きい場合
 
-    video.loadPixels();
-  
-    let videoRatio;
-    let canvasRatio = width / height;
-
-    // Check if device is in portrait mode
-    if (window.orientation === 90 || window.orientation === -90) {
-      videoRatio = video.height / video.width; // This is flipped compared to landscape mode
-    } else {
-      videoRatio = video.width / video.height;
-    }
-
-    //描画するサイズを計算
-    if (canvasRatio > videoRatio) {
-      // Canvas is taller than video, fit width
-      drawWidth = width;
-      drawHeight = width * videoRatio;
-    } else {
-      // Canvas is wider than video, fit height
-      drawHeight = height;
-      drawWidth = height / videoRatio;
-    }
-
-    if (pg.width !== drawWidth || pg.height !== drawHeight) {
-      // pgの幅と高さがdrawWidthとdrawHeightと異なる場合
-      pg = createGraphics(drawWidth, drawHeight);
+    if (pg.width !== video.width || pg.height !== video.height) {
+      // pgの幅と高さがvideoの幅と高さと異なる場合
+      pg = createGraphics(video.width, video.height);
       pg.noStroke();
     }
 
+    video.loadPixels();
+  
+    let videoRatio = video.width / video.height;
+    let canvasRatio = width / height;
+  
+    let drawWidth, drawHeight;
+
+    //描画するサイズを計算
+    if (canvasRatio > videoRatio) {
+      // Canvas is wider than video, fit height
+      drawHeight = height;
+      drawWidth = height * videoRatio;
+    } else {
+      // Canvas is taller than video, fit width
+      drawWidth = width;
+      drawHeight = width / videoRatio;
+    }
+
+    // 描画する位置を計算
     let startX = (width - drawWidth) / 2;
     let startY = (height - drawHeight) / 2;
 
-    image(video, startX, startY, drawWidth, drawHeight); //ビデオフレームを描画
-    image(pg, startX, startY, pg.width, pg.height);     //pgを描画
+    image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
+    image(pg, startX, startY, drawWidth, drawHeight); 
 
     // デバック出力
     console.log(`video.width: ${video.width}, video.height: ${video.height}`);
     console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
 }
+
 
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
@@ -147,21 +137,7 @@ function windowResized() {
 
 
 function adjustCanvas() {
+
   var element_webcam = document.getElementById('webcam');//webcamのidを取得
-
-  let webcamRatio = element_webcam.clientHeight / element_webcam.clientWidth;
-  let newHeight, newWidth;
-
-  if (window.orientation === 90 || window.orientation === -90) {
-    // In portrait mode, width should be smaller
-    newHeight = Math.min(element_webcam.clientHeight, element_webcam.clientWidth * webcamRatio);
-    newWidth = newHeight / webcamRatio;
-  } else {
-    // In landscape mode, width should be larger
-    newWidth = Math.min(element_webcam.clientWidth, element_webcam.clientHeight * webcamRatio);
-    newHeight = newWidth * webcamRatio;
-  }
-
-  resizeCanvas(newWidth, newHeight);//webcamのサイズに合わせる
+  resizeCanvas(element_webcam.clientWidth, element_webcam.clientHeight);//webcamのサイズに合わせる
 }
-
