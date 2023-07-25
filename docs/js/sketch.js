@@ -139,12 +139,11 @@ function draw() {
       pg.noStroke();
     }
 
-    // 描画する位置を計算
     let startX = (width - drawWidth) / 2;
     let startY = (height - drawHeight) / 2;
 
-    image(video, startX, startY, drawWidth, drawHeight); //イメージを描画
-    image(pg, startX, startY, drawWidth, drawHeight); 
+    image(video, startX, startY, drawWidth, drawHeight); //ビデオフレームを描画
+    image(pg, startX, startY, pg.width, pg.height);     //pgを描画
 
     // デバック出力
     console.log(`video.width: ${video.width}, video.height: ${video.height}`);
