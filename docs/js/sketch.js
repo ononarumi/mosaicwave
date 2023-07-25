@@ -57,7 +57,7 @@ gotSegmentation = function (results) {
   let drawWidthRatio = drawWidth / video.width;
   let drawHeightRatio = drawHeight / video.height;
 
-  let adjustedMosaicSize = mosaicSize * drawWidthRatio;
+  let adjustedMosaicSize = mosaicSize * Math.max(drawWidthRatio, drawHeightRatio);
 
   for (let y = 0; y < drawHeight; y += adjustedMosaicSize) {
     for (let x = 0; x < drawWidth; x += adjustedMosaicSize) {
@@ -90,8 +90,6 @@ adjustCanvas();
 // drawWidth and drawHeight are defined in the global scope
 let drawWidth, drawHeight;
 
-
-
 function draw() {
   background(245); //背景をライトグレーに設定
   if (video.loadedmetadata && video.width > 0 && video.height > 0) {
@@ -111,13 +109,13 @@ function draw() {
 
     //描画するサイズを計算
     if (canvasRatio > videoRatio) {
-      // Canvas is wider than video, fit height
-      drawHeight = height;
-      drawWidth = height * videoRatio;
-    } else {
       // Canvas is taller than video, fit width
       drawWidth = width;
-      drawHeight = width / videoRatio;
+      drawHeight = width * videoRatio;
+    } else {
+      // Canvas is wider than video, fit height
+      drawHeight = height;
+      drawWidth = height / videoRatio;
     }
 
     if (pg.width !== drawWidth || pg.height !== drawHeight) {
@@ -138,7 +136,6 @@ function draw() {
     console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
 }
-
 // スナップショットをダウンロードする関数
 function downloadSnapshot() {
   saveCanvas('mosaic', 'png');
