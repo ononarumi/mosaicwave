@@ -80,10 +80,30 @@ gotSegmentation = function (results) {
 
 adjustCanvas();
 }
-
 function draw() {
-  image(video, 0, 0, video.width, video.height); // Draw the video
-  image(pg, 0, 0, pg.width, pg.height); // Draw the mosaic on top of the video
+  let vidHeight = video.height;
+  let vidWidth = video.width;
+  let canvasRatio = width / height;
+  let videoRatio = vidWidth / vidHeight;
+
+  let drawWidth, drawHeight;
+
+  if (canvasRatio < videoRatio) {
+    // canvas is relatively narrower/taller than video
+    drawWidth = width;
+    drawHeight = width / videoRatio;
+  } else {
+    // canvas is relatively wider/shorter than video
+    drawHeight = height;
+    drawWidth = height * videoRatio;
+  }
+
+  // Compute position to center video
+  let xPos = (width - drawWidth) / 2;
+  let yPos = (height - drawHeight) / 2;
+
+  image(video, xPos, yPos, drawWidth, drawHeight); // Draw the video
+  image(pg, xPos, yPos, drawWidth, drawHeight); // Draw the mosaic on top of the video
 }
 
 
