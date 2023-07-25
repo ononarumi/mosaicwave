@@ -36,6 +36,7 @@ function setup() {
   downloadButton.mousePressed(downloadSnapshot); // ボタンが押されたときの動作を設定
   downloadButton.style('border', 'none'); // ボタンの枠線を削除
   downloadButton.style('outline', 'none'); // ボタンのアウトラインを削除
+  downloadButton.style('color', 'transparent'); // ボタンの角を丸くする
   downloadButton.style('text-shadow', '0 0 0 transparent'); // テキストのシャドウを削除
   downloadButton.style('background-color', 'transparent'); // 背景色を削除
  
