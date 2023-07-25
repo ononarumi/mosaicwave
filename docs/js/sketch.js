@@ -57,7 +57,15 @@ gotSegmentation = function (results) {
   let drawWidthRatio = drawWidth / video.width;
   let drawHeightRatio = drawHeight / video.height;
 
-  let adjustedMosaicSize = mosaicSize * Math.max(drawWidthRatio, drawHeightRatio);
+  // モザイクのサイズを計算
+  let adjustedMosaicSize;
+  if (window.orientation === 90 || window.orientation === -90) {
+    // In portrait mode, height should be smaller
+    adjustedMosaicSize = mosaicSize * drawHeightRatio;
+  } else {
+    // In landscape mode, width should be larger
+    adjustedMosaicSize = mosaicSize * drawWidthRatio;
+  }
 
   for (let y = 0; y < drawHeight; y += adjustedMosaicSize) {
     for (let x = 0; x < drawWidth; x += adjustedMosaicSize) {
