@@ -95,10 +95,17 @@ function draw() {
 
     video.loadPixels();
   
-    let videoRatio = video.width / video.height;
+    let videoRatio;
     let canvasRatio = width / height;
   
     let drawWidth, drawHeight;
+
+    // Check if device is in portrait mode
+    if (window.orientation === 90 || window.orientation === -90) {
+      videoRatio = video.height / video.width; // This is flipped compared to landscape mode
+    } else {
+      videoRatio = video.width / video.height;
+    }
 
     //描画するサイズを計算
     if (canvasRatio > videoRatio) {
@@ -123,6 +130,7 @@ function draw() {
     console.log(`drawWidth: ${drawWidth}, drawHeight: ${drawHeight}`);
   }
 }
+
 
 
 // スナップショットをダウンロードする関数
